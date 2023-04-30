@@ -23,6 +23,8 @@
     <log4j.version>2.11.1</log4j.version>
 
     <junit.version>4.12</junit.version>
+
+    <spring.version>5.1.9.RELEASE</spring.version>
   </properties>
 
   <dependencies>
@@ -36,12 +38,12 @@
 
 
 
-    <dependency>
+    <dependency> <!-- для поддержки запуска веб-сервисов в контейнере сервлетов-->
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet</artifactId>
       <version>${jersey.version}</version>
     </dependency>
-    <dependency>
+   <dependency>    <!-- для поддержки внедрения зависимостей, которые помогают управлять жизненным циклом сервлетов(типо совместно spring && jersey)-->
       <groupId>org.glassfish.jersey.inject</groupId>
       <artifactId>jersey-hk2</artifactId>
       <version>${jersey.version}</version>
@@ -77,6 +79,19 @@
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-core</artifactId>
       <version>${log4j.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-beans</artifactId>
+      <version>${spring.version}</version>
     </dependency>
 
 
