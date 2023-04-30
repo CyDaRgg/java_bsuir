@@ -1,14 +1,14 @@
 package exceptions;
 
-public class clientError extends Exception
+public class ServerError extends Exception
 {
     private String messageError;
 
-    public clientError(String message) {
-        this.messageError = message;
+    public ServerError(String messageError) {
+        this.messageError = messageError;
     }
 
-    public String getMessageError() {
+    public String GetMessageError() {
         return messageError;
     }
 

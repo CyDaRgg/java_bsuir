@@ -1,23 +1,23 @@
 package dao;
 
-public class taskResponse
+public class TaskResponse
 {
     private float average;
     private float median;
 
-    public float getAverage() {
+    public float GetAverage() {
         return average;
     }
 
-    public void setAverage(float average) {
+    public void SetAverage(float average) {
         this.average = average;
     }
 
-    public float getMedian() {
+    public float GetMedian() {
         return median;
     }
 
-    public void setMedian(float median) {
+    public void SetMedian(float median) {
         this.median = median;
     }
 }

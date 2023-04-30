@@ -1,12 +1,11 @@
 package actions;
 
-import dao.dataOfNumbers;
-import dao.taskResponse;
-import exceptions.clientError;
-import exceptions.serverError;
+import dao.DataOfNumbers;
+import dao.TaskResponse;
+import exceptions.ClientError;
+import exceptions.ServerError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import web.taskService;
 
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
@@ -14,70 +13,70 @@ import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-public class averageMedian
+public class AverageMedian
 {
-    private static final Logger logger= LoggerFactory.getLogger(averageMedian.class);
+    private static final Logger logger= LoggerFactory.getLogger(AverageMedian.class);
 
-    public Response task(String first, String second, String third, String fourth, String fifth  )
+    public Response Task(String first, String second, String third, String fourth, String fifth  )
     {
         LocalDateTime dt1= LocalDateTime.now();
         logger.info("SERVER START {}", dt1);
         try {
-            CheckParam(first, second, third, fourth, fifth);
-            dataOfNumbers data = new dataOfNumbers(first, second, third, fourth);
+            CheckParam(fifth);
+            DataOfNumbers data = new DataOfNumbers(first, second, third, fourth);
 
-            taskResponse resp = new taskResponse();
-            resp.setAverage(doAverage(data));
-            resp.setMedian(doMedian(data));
+            TaskResponse resp = new TaskResponse();
+            resp.SetAverage(DoAverage(data));
+            resp.SetMedian(DoMedian(data));
 
-            JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("average is", resp.getAverage())
-                    .add("median is", resp.getMedian());
+            JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("average is", resp.GetAverage())
+                    .add("median is", resp.GetMedian());
             String json = jsonBuild.build().toString();
 
             logger.info("SERVER ENDS CORRECT");
             return Response.status(200).entity(json).build();
         }
-        catch(clientError ex)
+        catch(ClientError ex)
         {
             logger.error("CLIENT ERROR 400");
-            JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("clientError 400 ", ex.getMessageError());
+            JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("clientError 400 ", ex.GetMessageError());
             String json = jsonBuild.build().toString();
             return Response.status(400).entity(json).build();
         }
-        catch(serverError ex)
+        catch(ServerError ex)
         {
             logger.error("SERVER ERROR 500");
-            JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("serverError 500 ", ex.getMessageError());
+            JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("serverError 500 ", ex.GetMessageError());
             String json = jsonBuild.build().toString();
             return Response.status(500).entity(json).build();
         }
     }
 
-    public float doAverage(dataOfNumbers data) throws serverError
+    public float DoAverage(DataOfNumbers data) throws ServerError
     {
         LocalDateTime dt1= LocalDateTime.now();
         logger.info("START COUNTING AVERAGE {}", dt1);
 
-        if(data.getAMOUNT()==0)
+        if(data.GetAMOUNT()==0)
         {
             LocalDateTime dt2= LocalDateTime.now();
             logger.error("ERROR COUNTING AVERAGE {}", dt2);
-            throw new serverError("When we considered the average value, we had to divide by 0");
+            throw new ServerError("When we considered the average value, we had to divide by 0");
         }
             float sum = 0f;
-            int[] arrN = data.getArr();
-            for (byte i = 0; i < data.getAMOUNT(); ++i) {
+            int[] arrN = data.GetArr();
+            for (byte i = 0; i < data.GetAMOUNT(); ++i) {
                 sum = sum + arrN[i];
             }
-            return sum / data.getAMOUNT();
+            return sum / data.GetAMOUNT();
 
     }
-    public float doMedian(dataOfNumbers data) throws serverError
+    public float DoMedian(DataOfNumbers data) throws ServerError
     {
         LocalDateTime dt1= LocalDateTime.now();
         logger.info("START COUNTING MEDIAN {}", dt1);
         float median;
-        int[] copy= Arrays.copyOf(data.getArr(), data.getAMOUNT());
+        int[] copy= Arrays.copyOf(data.GetArr(), data.GetAMOUNT());
         Arrays.sort(copy);
         byte mid=(byte)(copy.length/2);
         try {
@@ -89,10 +88,10 @@ public class averageMedian
         }catch(ArrayIndexOutOfBoundsException ex) {
             LocalDateTime dt2= LocalDateTime.now();
             logger.error("ERROR COUNTING MEDIAN {}", dt2);
-            throw new serverError("When we considered the median value, we had to go out of Bound of Array, input more than 0 parameters");
+            throw new ServerError("When we considered the median value, we had to go out of Bound of Array, input more than 0 parameters");
         }
     }
-    public void CheckParam(String first,String second, String thirst, String fourth, String fifth ) throws clientError
+    public void CheckParam(String fifth ) throws ClientError
     {
         LocalDateTime dt1= LocalDateTime.now();
         logger.info("START CHECK PARAM {}", dt1);
@@ -100,7 +99,7 @@ public class averageMedian
         {
             LocalDateTime dt2= LocalDateTime.now();
             logger.error("ERROR CHECK PARAMETERS, there are parameters more than 4 {}", dt2);
-            throw new clientError("There are parameters more than 4");
+            throw new ClientError("There are parameters more than 4");
         }
 
     }

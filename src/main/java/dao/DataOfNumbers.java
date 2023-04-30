@@ -1,20 +1,26 @@
 package dao;
 
-import exceptions.clientError;
-import exceptions.serverError;
+import exceptions.ClientError;
 
 import java.util.Arrays;
 
-public class dataOfNumbers
+public class DataOfNumbers
 {
     private byte AMOUNT=0;
 
     private int[] arr;
 
    //todo handl the excaption
-    public dataOfNumbers(String first, String second, String third, String fourth) throws clientError {
+    public DataOfNumbers(String first, String second, String third, String fourth) throws ClientError {
       try {
-          if(first!=null)AMOUNT++; if(second!=null)AMOUNT++;if(third!=null)AMOUNT++;if(fourth!=null)AMOUNT++;
+          if(first!=null)
+              AMOUNT++;
+          if(second!=null)
+              AMOUNT++;
+          if(third!=null)
+              AMOUNT++;
+          if(fourth!=null)
+              AMOUNT++;
 
           arr= new int[AMOUNT];
           if(AMOUNT>0)
@@ -27,28 +33,28 @@ public class dataOfNumbers
           arr[3] = Integer.parseInt(fourth);
       }catch(NumberFormatException ex)
       {
-          throw new clientError("There is/are not suitable parameter/parameters," +
+          throw new ClientError("There is/are not suitable parameter/parameters," +
                   " input only numbers ");
       }
     }
 
-    public dataOfNumbers() {
+    public DataOfNumbers() {
 
     }
 
-    public int[] getArr() {
+    public int[] GetArr() {
         return arr;
     }
 
-    public byte getAMOUNT() {
+    public byte GetAMOUNT() {
         return AMOUNT;
     }
 
-    public void setAMOUNT(byte AMOUNT) {
+    public void SetAMOUNT(byte AMOUNT) {
        this.AMOUNT = AMOUNT;
     }
 
-    public void setArr(int[] arr) {
+    public void SetArr(int[] arr) {
         int[] copy= Arrays.copyOf(arr, arr.length);
         this.arr = copy;
     }
