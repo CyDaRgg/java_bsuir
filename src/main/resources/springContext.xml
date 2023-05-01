@@ -6,9 +6,10 @@
     <bean id="MyCache" class="services.InMemoryCaсhe" scope="singleton">
     </bean>
 
-    <bean id="AverageMedian" class="actions.AverageMedian" scope="singleton">
+    <bean id="AverageMedian" class="actions.AverageMedian" scope="prototype">
         <property name="cache" ref="MyCache"/>
     </bean>
+
 
 
 </beans>

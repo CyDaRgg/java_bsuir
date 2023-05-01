@@ -6,6 +6,7 @@ import exceptions.ClientError;
 import exceptions.ServerError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import services.InMemoryCaсhe;
 
 import javax.json.Json;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Set;
+
 
 public class AverageMedian
 {

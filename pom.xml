@@ -96,4 +96,19 @@
 
 
   </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <outputDirectory>C:\tomCat\apache-tomcat-9.0.73\webapps</outputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

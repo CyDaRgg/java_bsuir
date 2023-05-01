@@ -19,4 +19,10 @@
         <appender-ref ref="fileAppender"/>
     </category>
 
+    <category name="web" additivity="false">
+        <!--all, trace, debug, info, warn, error, fatal-->
+        <priority value="all"/>
+        <appender-ref ref="fileAppender"/>
+    </category>
+
 </log4j:configuration>

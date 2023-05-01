@@ -1,5 +1,7 @@
 package services;
 
+import org.springframework.context.annotation.Scope;
+
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
