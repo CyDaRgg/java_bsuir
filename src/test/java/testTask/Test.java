@@ -30,16 +30,16 @@ private AverageMedian myDo= new AverageMedian();
 {
     logger.info("TESTS STARTED");
     int[] arr1 = {6,50,17,1};
-    data1.SetArr(arr1);
-    data1.SetAMOUNT((byte)4);
+    data1.setArr(arr1);
+    data1.setAMOUNT((byte)4);
 
     int[] arr2 = {8,2,42,102,25};
-    data2.SetArr(arr2);
-    data2.SetAMOUNT((byte)5);
+    data2.setArr(arr2);
+    data2.setAMOUNT((byte)5);
 
     int[] arr3 = {};
-    data3.SetArr(arr3);
-    data3.SetAMOUNT((byte)0);
+    data3.setArr(arr3);
+    data3.setAMOUNT((byte)0);
 
 }
 
@@ -49,12 +49,12 @@ public void TestAverage()
 {
     logger.info("TEST AVERAGE STARTED");
     try {
-     float res1= myDo.DoAverage(data1);
+     float res1= myDo.doAverage(data1);
      Assert.assertTrue(res1==aRES1);
-     float res2= myDo.DoAverage(data2);
+     float res2= myDo.doAverage(data2);
      Assert.assertTrue(res2==aRES2);
 
-        myDo.DoAverage(data3);
+        myDo.doAverage(data3);
     }catch(ServerError ex)
     {
         Assert.assertFalse(ERROR);
@@ -66,12 +66,12 @@ public void TestAverage()
 {
     logger.info("TEST MEDIAN STARTED");
     try {
-        float res1= myDo.DoMedian(data1);
+        float res1= myDo.doMedian(data1);
         Assert.assertTrue(res1==mRES1);
-        float res2= myDo.DoMedian(data2);
+        float res2= myDo.doMedian(data2);
         Assert.assertTrue(res2==mRES2);
 
-        myDo.DoMedian(data3);
+        myDo.doMedian(data3);
     }catch(ServerError ex)
     {
         Assert.assertFalse(ERROR);

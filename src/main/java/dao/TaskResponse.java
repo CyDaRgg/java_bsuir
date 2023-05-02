@@ -5,19 +5,19 @@ public class TaskResponse
     private float average;
     private float median;
 
-    public float GetAverage() {
+    public float getAverage() {
         return average;
     }
 
-    public void SetAverage(float average) {
+    public void setAverage(float average) {
         this.average = average;
     }
 
-    public float GetMedian() {
+    public float getMedian() {
         return median;
     }
 
-    public void SetMedian(float median) {
+    public void setMedian(float median) {
         this.median = median;
     }
 }

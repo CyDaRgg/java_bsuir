@@ -3,10 +3,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="MyCache" class="services.InMemoryCaсhe" scope="singleton">
+    <bean id="MyCache" class="services.InMemoryCache" scope="singleton">
     </bean>
 
-    <bean id="AverageMedian" class="actions.AverageMedian" scope="prototype">
+    <bean id="AverageMedian" class="actions.AverageMedian" scope="singleton">
         <property name="cache" ref="MyCache"/>
     </bean>
 

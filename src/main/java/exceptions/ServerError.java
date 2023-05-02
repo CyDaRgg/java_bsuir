@@ -8,7 +8,7 @@ public class ServerError extends Exception
         this.messageError = messageError;
     }
 
-    public String GetMessageError() {
+    public String getMessageError() {
         return messageError;
     }
 

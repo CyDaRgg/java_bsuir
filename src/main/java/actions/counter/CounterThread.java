@@ -4,7 +4,8 @@ public class CounterThread implements Runnable
 {
 
     @Override
-    public  void run() {
+    public  void run()
+    {
         Counter.increment();
     }
 }

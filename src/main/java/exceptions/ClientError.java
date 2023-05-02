@@ -8,7 +8,7 @@ public class ClientError extends Exception
         this.messageError = message;
     }
 
-    public String GetMessageError() {
+    public String getMessageError() {
         return messageError;
     }
 

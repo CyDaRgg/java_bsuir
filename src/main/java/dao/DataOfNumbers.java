@@ -10,7 +10,6 @@ public class DataOfNumbers
 
     private int[] arr;
 
-   //todo handl the excaption
     public DataOfNumbers(String first, String second, String third, String fourth) throws ClientError {
       try {
     this.AMOUNT=4;
@@ -32,19 +31,19 @@ public class DataOfNumbers
 
     }
 
-    public int[] GetArr() {
+    public int[] getArr() {
         return arr;
     }
 
-    public byte GetAMOUNT() {
+    public byte getAMOUNT() {
         return AMOUNT;
     }
 
-    public void SetAMOUNT(byte AMOUNT) {
+    public void setAMOUNT(byte AMOUNT) {
        this.AMOUNT = AMOUNT;
     }
 
-    public void SetArr(int[] arr) {
+    public void setArr(int[] arr) {
         int[] copy= Arrays.copyOf(arr, arr.length);
         this.arr = copy;
     }
