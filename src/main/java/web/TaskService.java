@@ -3,9 +3,9 @@ package web;
 import actions.AverageMedian;
 import actions.counter.CounterThread;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.Parameter;
+import dao.StatisticsValuesResponse;
 import dao.TaskResponse;
 import exceptions.ClientError;
 import exceptions.ServerError;
@@ -21,18 +21,18 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 @Singleton
 @Path("/task")
 public class TaskService {
     private static Logger logger = LoggerFactory.getLogger(TaskService.class);
     private static AverageMedian contrAverageMedian = InitSpringContext.getContext().getBean("AverageMedian", AverageMedian.class);
-
     private static  ObjectMapper mapper = new ObjectMapper();
     private static ControllerAverageMedian controllerAverageMedian = new ControllerAverageMedian();
+
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response averageAndMedian(@QueryParam("first") String first,
@@ -80,10 +80,12 @@ public class TaskService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response bulkOperation(List<Parameter> paramRequest) {
 
+        StatisticsValuesResponse statistics= new StatisticsValuesResponse();
         try {
             List<TaskResponse> responses = paramRequest.stream().map(param -> {
-                try {
-                    return controllerAverageMedian.countAverageMedian(param);
+                try
+                {
+                    return contrAverageMedian.task(param.getFirst(), param.getSecond(), param.getThird(), param.getFourth(), null);
                 } catch (ClientError ex) {
                     throw new RuntimeException(ex.getMessageError());
                 } catch (ServerError ex) {
@@ -91,9 +93,18 @@ public class TaskService {
                 }
             }).collect(Collectors.toList());
 
-            
         String json = mapper.writeValueAsString(responses);
-        return Response.status(200).entity(json).build();
+        json=json.replace("]", ",");
+
+
+           controllerAverageMedian.statisticsAverage(responses,statistics);
+           controllerAverageMedian.statisticsMedian(responses,statistics);
+           controllerAverageMedian.statisticsRequestsParams(paramRequest,statistics);
+
+           String jsonAvg=controllerAverageMedian.statisticsJsonStringResponse(statistics);
+            json+=jsonAvg+"]";
+
+            return Response.status(200).entity(json).build();
     }
          catch (JsonProcessingException e)
         {
@@ -113,10 +124,4 @@ public class TaskService {
 
         }
     }
-
-
-
-
-
-
 }

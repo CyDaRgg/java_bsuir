@@ -5,6 +5,7 @@ public class TaskResponse
     private float average;
     private float median;
 
+
     public float getAverage() {
         return average;
     }
@@ -20,4 +21,6 @@ public class TaskResponse
     public void setMedian(float median) {
         this.median = median;
     }
+
+
 }
