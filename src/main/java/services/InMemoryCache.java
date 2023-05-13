@@ -1,13 +1,15 @@
 package services;
 
+import dao.TaskResponse;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class InMemoryCache {
-    private Map<String, String> cache = new HashMap<>();
+    private Map<String, TaskResponse> cache = new HashMap<>();
 
-    public String isContains(String first, String second, String third, String fourth) {
+    public TaskResponse isContains(String first, String second, String third, String fourth) {
         Set<String> temp = cache.keySet();
 
         for (String i : temp) {
@@ -18,11 +20,11 @@ public class InMemoryCache {
         return null;
     }
 
-    public String get(String key) {
+    public TaskResponse get(String key) {
         return cache.get(key);
     }
 
-    public void put(String key, String value) {
+    public void put(String key, TaskResponse value) {
         cache.put(key, value);
     }
 

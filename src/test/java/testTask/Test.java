@@ -1,7 +1,7 @@
 package testTask;
 
 import actions.AverageMedian;
-import dao.DataOfNumbers;
+import dao.CheckClientError;
 import exceptions.ServerError;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -19,9 +19,9 @@ public class Test
 
     private static final float mRES1= 11.5f;
     private static final float mRES2= 25f;
-private static DataOfNumbers data1= new DataOfNumbers();
-private static DataOfNumbers data2= new DataOfNumbers();
-private static DataOfNumbers data3= new DataOfNumbers();
+private static CheckClientError data1= new CheckClientError();
+private static CheckClientError data2= new CheckClientError();
+private static CheckClientError data3= new CheckClientError();
 
 private AverageMedian myDo= new AverageMedian();
 
@@ -29,15 +29,15 @@ private AverageMedian myDo= new AverageMedian();
   public static void Initialization()
 {
     logger.info("TESTS STARTED");
-    int[] arr1 = {6,50,17,1};
+    float[] arr1 = {6,50,17,1};
     data1.setArr(arr1);
     data1.setAMOUNT((byte)4);
 
-    int[] arr2 = {8,2,42,102,25};
+    float[] arr2 = {8,2,42,102,25};
     data2.setArr(arr2);
     data2.setAMOUNT((byte)5);
 
-    int[] arr3 = {};
+    float[] arr3 = {};
     data3.setArr(arr3);
     data3.setAMOUNT((byte)0);
 

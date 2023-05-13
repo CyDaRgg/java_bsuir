@@ -4,22 +4,22 @@ import exceptions.ClientError;
 
 import java.util.Arrays;
 
-public class DataOfNumbers
+public class CheckClientError
 {
     private byte AMOUNT=0;
 
-    private int[] arr;
+    private float[] arr;
 
-    public DataOfNumbers(String first, String second, String third, String fourth) throws ClientError {
+    public CheckClientError(String first, String second, String third, String fourth) throws ClientError {
       try {
     this.AMOUNT=4;
 
-          arr= new int[AMOUNT];
+          arr= new float[AMOUNT];
 
-          arr[0] = Integer.parseInt(first);
-          arr[1] = Integer.parseInt(second);
-          arr[2] = Integer.parseInt(third);
-          arr[3] = Integer.parseInt(fourth);
+          arr[0] = Float.parseFloat(first);
+          arr[1] = Float.parseFloat(second);
+          arr[2] = Float.parseFloat(third);
+          arr[3] = Float.parseFloat(fourth);
       }catch(NumberFormatException ex)
       {
           throw new ClientError("There is/are not suitable parameter/parameters," +
@@ -27,11 +27,11 @@ public class DataOfNumbers
       }
     }
 
-    public DataOfNumbers() {
+    public CheckClientError() {
 
     }
 
-    public int[] getArr() {
+    public float[] getArr() {
         return arr;
     }
 
@@ -43,8 +43,8 @@ public class DataOfNumbers
        this.AMOUNT = AMOUNT;
     }
 
-    public void setArr(int[] arr) {
-        int[] copy= Arrays.copyOf(arr, arr.length);
+    public void setArr(float[] arr) {
+        float[] copy= Arrays.copyOf(arr, arr.length);
         this.arr = copy;
     }
 }
