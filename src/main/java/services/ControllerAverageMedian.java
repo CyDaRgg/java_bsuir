@@ -2,7 +2,7 @@ package services;
 
 import dao.Parameter;
 import dao.StatisticsValuesResponse;
-import dao.TaskResponse;
+import dao.AverageMedianResponse;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import java.util.List;
@@ -11,29 +11,29 @@ import java.util.stream.Stream;
 
 public class ControllerAverageMedian
 {
-    public void statisticsAverage(List<TaskResponse> responses,StatisticsValuesResponse statistics  )
+    public void statisticsAverage(List<AverageMedianResponse> responses, StatisticsValuesResponse statistics  )
     {
          statistics.setMaxAverage( responses.stream()
-                .map(TaskResponse::getMedian)
-                .max(Float::compareTo));
+                .map(AverageMedianResponse::getMedian)
+                .max(Float::compareTo).orElse(0.0f));
          statistics.setMinAverage(responses.stream()
-                .map(TaskResponse::getMedian)
-                .min(Float::compareTo));
+                .map(AverageMedianResponse::getMedian)
+                .min(Float::compareTo).orElse(0.0f));
          statistics.setAvgAverage( responses.stream()
-                .mapToDouble(TaskResponse::getMedian)
-                .average());
+                .mapToDouble(AverageMedianResponse::getMedian)
+                .average().orElse(0.0));
     }
-    public void statisticsMedian(List<TaskResponse> responses,StatisticsValuesResponse statistics  )
+    public void statisticsMedian(List<AverageMedianResponse> responses, StatisticsValuesResponse statistics  )
     {
         statistics.setMaxMedian(responses.stream()
-                .map(TaskResponse::getMedian)
-                .max(Float::compareTo));
+                .map(AverageMedianResponse::getMedian)
+                .max(Float::compareTo).orElse(0.0f));
         statistics.setMinMedian(responses.stream()
-                .map(TaskResponse::getMedian)
-                .min(Float::compareTo));
+                .map(AverageMedianResponse::getMedian)
+                .min(Float::compareTo).orElse(0.0f));
         statistics.setAvgMedian(responses.stream()
-                .mapToDouble(TaskResponse::getMedian)
-                .average());
+                .mapToDouble(AverageMedianResponse::getMedian)
+                .average().orElse(0.0));
     }
 
     public void statisticsRequestsParams(List<Parameter>paramRequest,StatisticsValuesResponse statistics)
@@ -44,25 +44,25 @@ public class ControllerAverageMedian
                 .collect(Collectors.toList());
 
          statistics.setMaxParam(parametersFloat.stream()
-                .max(Float::compareTo));
+                .max(Float::compareTo).orElse(0.0f));
          statistics.setMinParam(parametersFloat.stream()
-                .min(Float::compareTo));
+                .min(Float::compareTo).orElse(0.0f));
          statistics.setAvgParam(parametersFloat.stream()
                 .mapToDouble(Float::doubleValue)
-                .average());
+                .average().orElse(0.0));
     }
     public String statisticsJsonStringResponse(StatisticsValuesResponse statistics)
     {
         JsonObjectBuilder jsonBuild = Json.createObjectBuilder()
-                .add("Average min", statistics.getMinAverage().orElse(0f).toString())
-                .add("Average max", statistics.getMaxAverage().orElse(0f).toString())
-                .add("Average avg", Double.toString(statistics.getAvgAverage().orElse(0.0)))
-                .add("Median min", statistics.getMinMedian().orElse(0f).toString())
-                .add("Median max", statistics.getMaxMedian().orElse(0f).toString())
-                .add("Median avg", Double.toString(statistics.getAvgMedian().orElse(0.0)))
-                .add("Param min", statistics.getMinParam().orElse(0f).toString())
-                .add("Param max", statistics.getMaxParam().orElse(0f).toString())
-                .add("Param avg",Double.toString(statistics.getAvgParam().orElse(0.0)));
+                .add("Average min", Float.toString(statistics.getMinAverage()))
+                .add("Average max",  Float.toString(statistics.getMaxAverage()))
+                .add("Average avg", Double.toString(statistics.getAvgAverage()))
+                .add("Median min", Float.toString(statistics.getMinMedian()))
+                .add("Median max", Float.toString(statistics.getMaxMedian()))
+                .add("Median avg", Double.toString(statistics.getAvgMedian()))
+                .add("Param min", Float.toString(statistics.getMinParam()))
+                .add("Param max", Float.toString(statistics.getMaxParam()))
+                .add("Param avg",Double.toString(statistics.getAvgParam()));
         String jsonAvg = jsonBuild.build().toString();
         return jsonAvg;
     }

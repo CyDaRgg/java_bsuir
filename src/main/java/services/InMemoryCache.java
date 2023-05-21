@@ -1,15 +1,15 @@
 package services;
 
-import dao.TaskResponse;
+import dao.AverageMedianResponse;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class InMemoryCache {
-    private Map<String, TaskResponse> cache = new HashMap<>();
+    private Map<String, AverageMedianResponse> cache = new HashMap<>();
 
-    public TaskResponse isContains(String first, String second, String third, String fourth) {
+    public AverageMedianResponse isContains(String first, String second, String third, String fourth) {
         Set<String> temp = cache.keySet();
 
         for (String i : temp) {
@@ -20,11 +20,11 @@ public class InMemoryCache {
         return null;
     }
 
-    public TaskResponse get(String key) {
+    public AverageMedianResponse get(String key) {
         return cache.get(key);
     }
 
-    public void put(String key, TaskResponse value) {
+    public void put(String key, AverageMedianResponse value) {
         cache.put(key, value);
     }
 

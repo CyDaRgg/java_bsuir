@@ -1,6 +1,4 @@
-package dao;
-
-import exceptions.ClientError;
+package exceptions;
 
 import java.util.Arrays;
 

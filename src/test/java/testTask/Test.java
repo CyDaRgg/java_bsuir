@@ -1,7 +1,7 @@
 package testTask;
 
 import actions.AverageMedian;
-import dao.CheckClientError;
+import exceptions.CheckClientError;
 import exceptions.ServerError;
 import org.junit.Assert;
 import org.junit.BeforeClass;

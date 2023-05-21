@@ -1,7 +1,7 @@
 package actions;
 
-import dao.CheckClientError;
-import dao.TaskResponse;
+import exceptions.CheckClientError;
+import dao.AverageMedianResponse;
 import exceptions.ClientError;
 import exceptions.ServerError;
 import org.slf4j.Logger;
@@ -25,13 +25,13 @@ public class AverageMedian
         this.cache = cache;
     }
 
-    public TaskResponse task(String first, String second, String third, String fourth, String fifth  ) throws ClientError, ServerError
+    public AverageMedianResponse task(String first, String second, String third, String fourth, String fifth  ) throws ClientError, ServerError
     {
         try {
             checkParam(fourth,fifth);
             CheckClientError data = new CheckClientError(first, second, third, fourth);
 
-            TaskResponse countAnswer =cache.isContains(first, second, third, fourth);
+            AverageMedianResponse countAnswer =cache.isContains(first, second, third, fourth);
             if(countAnswer!=null)
             {
                 logger.info("CACHE: THIS VALUES HAVE BEEN USED, WE DON'T CALCULATE IT AGAIN: Average is {}, Median is {} {}",countAnswer.getAverage(), countAnswer.getMedian());
@@ -40,7 +40,7 @@ public class AverageMedian
             }
             else {
 
-                TaskResponse resp = new TaskResponse();
+                AverageMedianResponse resp = new AverageMedianResponse();
 
                 resp.setAverage(doAverage(data));
                 resp.setMedian(doMedian(data));

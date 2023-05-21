@@ -1,98 +1,111 @@
 package dao;
 
-import java.util.Optional;
-import java.util.OptionalDouble;
+
+
+
 
 public class StatisticsValuesResponse
 {
-    private Optional<Float> minMedian;
 
-    private Optional<Float> maxMedian;
+    private int statistics_id;
 
-    private  OptionalDouble avgMedian;
+    private float minMedian;
 
-    private Optional<Float> minAverage;
+    private float maxMedian;
 
-    private Optional<Float> maxAverage;
-
-    private OptionalDouble avgAverage;
+    private  double avgMedian;
 
 
-    private Optional<Float> minParam;
+    private float minAverage;
 
-    private  Optional<Float> maxParam;
+    private float maxAverage;
 
-    private  OptionalDouble avgParam;
+    private double avgAverage;
 
-    public Optional<Float> getMinMedian() {
+
+    private float minParam;
+
+    private  float maxParam;
+
+    private  double avgParam;
+
+    public int getStatistics_id() {
+        return statistics_id;
+    }
+
+    public void setStatistics_id(int statistics_id) {
+        this.statistics_id = statistics_id;
+    }
+
+    public float getMinMedian() {
         return minMedian;
     }
 
-    public void setMinMedian(Optional<Float> minMedian) {
+    public void setMinMedian(float minMedian) {
         this.minMedian = minMedian;
     }
 
-    public Optional<Float> getMaxMedian() {
+    public float getMaxMedian() {
         return maxMedian;
     }
 
-    public void setMaxMedian(Optional<Float> maxMedian) {
+    public void setMaxMedian(float maxMedian) {
         this.maxMedian = maxMedian;
     }
 
-    public OptionalDouble getAvgMedian() {
+    public double getAvgMedian() {
         return avgMedian;
     }
 
-    public void setAvgMedian(OptionalDouble avgMedian) {
+    public void setAvgMedian(double avgMedian) {
         this.avgMedian = avgMedian;
     }
 
-    public Optional<Float> getMinAverage() {
+    public float getMinAverage() {
         return minAverage;
     }
 
-    public void setMinAverage(Optional<Float> minAverage) {
+    public void setMinAverage(float minAverage) {
         this.minAverage = minAverage;
     }
 
-    public Optional<Float> getMaxAverage() {
+    public float getMaxAverage() {
         return maxAverage;
     }
 
-    public void setMaxAverage(Optional<Float> maxAverage) {
+    public void setMaxAverage(float maxAverage) {
         this.maxAverage = maxAverage;
     }
 
-    public OptionalDouble getAvgAverage() {
+    public double getAvgAverage() {
         return avgAverage;
     }
 
-    public void setAvgAverage(OptionalDouble avgAverage) {
+    public void setAvgAverage(double avgAverage) {
         this.avgAverage = avgAverage;
     }
 
-    public Optional<Float> getMinParam() {
+    public float getMinParam() {
         return minParam;
     }
 
-    public void setMinParam(Optional<Float> minParam) {
+    public void setMinParam(float minParam) {
         this.minParam = minParam;
     }
 
-    public Optional<Float> getMaxParam() {
+    public float getMaxParam() {
         return maxParam;
     }
 
-    public void setMaxParam(Optional<Float> maxParam) {
+    public void setMaxParam(float maxParam) {
         this.maxParam = maxParam;
     }
 
-    public OptionalDouble getAvgParam() {
+    public double getAvgParam() {
         return avgParam;
     }
 
-    public void setAvgParam(OptionalDouble avgParam) {
+    public void setAvgParam(double avgParam) {
         this.avgParam = avgParam;
     }
 }

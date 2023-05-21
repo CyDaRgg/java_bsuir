@@ -6,12 +6,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.Parameter;
 import dao.StatisticsValuesResponse;
-import dao.TaskResponse;
+import dao.AverageMedianResponse;
 import exceptions.ClientError;
 import exceptions.ServerError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import services.ControllerAverageMedian;
+import services.DataBaseRecord;
 import services.InitSpringContext;
 
 import javax.inject.Singleton;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 public class TaskService {
     private static Logger logger = LoggerFactory.getLogger(TaskService.class);
     private static AverageMedian contrAverageMedian = InitSpringContext.getContext().getBean("AverageMedian", AverageMedian.class);
-    private static  ObjectMapper mapper = new ObjectMapper();
+    private  static ObjectMapper mapper = new ObjectMapper();
     private static ControllerAverageMedian controllerAverageMedian = new ControllerAverageMedian();
 
     @Produces(MediaType.APPLICATION_JSON)
@@ -45,7 +46,7 @@ public class TaskService {
         logger.info("SERVER START {}", dt1);
         countAllAmountOfRequests();
         try {
-            TaskResponse resp = contrAverageMedian.task(first, second, third, fourth, fifth);
+            AverageMedianResponse resp = contrAverageMedian.task(first, second, third, fourth, fifth);
 
             JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("average is", resp.getAverage())
                     .add("median is", resp.getMedian());
@@ -56,17 +57,19 @@ public class TaskService {
         }
         catch(ClientError ex)
         {
-            JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("clientError 400 ", ex.getMessageError());
-            String json = jsonBuild.build().toString();
-            return Response.status(400).entity(json).build();
+            return jsonAverMedErrorResp("clientError 400 ",ex.getMessageError(),400);
         }
         catch(ServerError ex)
         {
-            JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("serverError 500 ", ex.getMessageError());
-            String json = jsonBuild.build().toString();
-            return Response.status(500).entity(json).build();
+            return jsonAverMedErrorResp("serverError 500 ", ex.getMessageError(),500);
         }
 
+    }
+    private Response jsonAverMedErrorResp(String numberError, String messageError, int numbError)
+    {
+        JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add(numberError, messageError);
+        String json = jsonBuild.build().toString();
+        return Response.status(numbError).entity(json).build();
     }
 
     private void countAllAmountOfRequests() {
@@ -82,7 +85,7 @@ public class TaskService {
 
         StatisticsValuesResponse statistics= new StatisticsValuesResponse();
         try {
-            List<TaskResponse> responses = paramRequest.stream().map(param -> {
+            List<AverageMedianResponse> responses = paramRequest.stream().map(param -> {
                 try
                 {
                     return contrAverageMedian.task(param.getFirst(), param.getSecond(), param.getThird(), param.getFourth(), null);
@@ -101,6 +104,8 @@ public class TaskService {
            controllerAverageMedian.statisticsMedian(responses,statistics);
            controllerAverageMedian.statisticsRequestsParams(paramRequest,statistics);
 
+           DataBaseRecord.dataBaseRecord(paramRequest,responses,statistics);
+
            String jsonAvg=controllerAverageMedian.statisticsJsonStringResponse(statistics);
             json+=jsonAvg+"]";
 
@@ -108,20 +113,11 @@ public class TaskService {
     }
          catch (JsonProcessingException e)
         {
-            JsonObjectBuilder jsonBuild = Json.createObjectBuilder()
-                    .add("Error", "Something wrong");
-            String jsonResp = jsonBuild.build().toString();
-            return Response.status(Response.Status.BAD_REQUEST).entity(jsonResp).build();
-
+            return jsonAverMedErrorResp("Error","Something wrong",400);
         }
         catch(RuntimeException ex)
         {
-
-            JsonObjectBuilder jsonBuild = Json.createObjectBuilder()
-                    .add("clientError 400 ", ex.getMessage());
-            String jsonResp = jsonBuild.build().toString();
-            return Response.status(Response.Status.BAD_REQUEST).entity(jsonResp).build();
-
+            return jsonAverMedErrorResp("clientError 400 ", ex.getMessage(),400);
         }
     }
 }
