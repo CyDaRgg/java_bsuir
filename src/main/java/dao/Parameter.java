@@ -10,7 +10,6 @@ public class Parameter
 {
     @JsonIgnore
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="parameters_id")
     private int parameters_id;
     @JsonProperty("first")

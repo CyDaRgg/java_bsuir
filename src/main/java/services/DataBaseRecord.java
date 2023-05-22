@@ -3,40 +3,51 @@ package services;
 
 import dao.AverageMedianResponse;
 import dao.Parameter;
-import dao.StatisticsValuesResponse;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-import java.util.List;
+
 
 public class DataBaseRecord
 {
-    public static void dataBaseRecord(List<Parameter> paramRequest,List<AverageMedianResponse> responses, StatisticsValuesResponse statistics)
-    {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("persistence");
-        EntityManager em = emf.createEntityManager(); //типо сессия
+    private static EntityManager em =Persistence.createEntityManagerFactory("persistence").createEntityManager();
+    private static final String SCRIPT=
+            "DROP TABLE IF EXISTS request_parameters; " +
+            "DROP TABLE IF EXISTS average_median; "+
+            "CREATE TABLE request_parameters( " +
+            "    parameters_id SERIAL PRIMARY KEY, " +
+            "    first_param varchar(20) NOT NULL, " +
+            "    second_param varchar(20) NOT NULL, " +
+            "    third_param varchar(20) NOT NULL, " +
+            "    fourth_param varchar(20) NOT NULL " +
+            " ); " +
+            "CREATE TABLE average_median(" +
+            "    average_median_id SERIAL PRIMARY KEY, " +
+            "    average REAL NOT NULL, " +
+            "    median REAL NOT NULL " +
+            "); ";
 
+    public static void dataBaseRecord(Parameter paramRequest,AverageMedianResponse response, int id)
+    {
         em.getTransaction().begin();
 
-
-        prepareCalculations(em,paramRequest,responses);
+        prepareCalculations(em,paramRequest,response, id);
 
         em.getTransaction().commit();
     }
 
-    private static void prepareCalculations( EntityManager em,List<Parameter> paramRequest,List<AverageMedianResponse> responses )
+    private static void prepareCalculations( EntityManager em,Parameter paramRequest,AverageMedianResponse response, int id )
     {
-        Parameter p;
-        AverageMedianResponse amr;
+       paramRequest.setParameters_id(id);
+       response.setAverageMedian_id(id);
 
-        for(int i=0; i<paramRequest.size();++i)
-        {
-            p=paramRequest.get(i);
-            amr=responses.get(i);
+       em.merge(paramRequest);
+       em.merge(response);
+    }
 
-            em.merge(p);
-            em.merge(amr);
-        }
+    public static void  executeInitialScript() {
+        em.getTransaction().begin();
+        em.createNativeQuery(SCRIPT).executeUpdate();
+        em.getTransaction().commit();
     }
 }

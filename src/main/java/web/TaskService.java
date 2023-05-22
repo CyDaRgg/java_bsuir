@@ -23,6 +23,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 
@@ -31,7 +34,8 @@ import java.util.stream.Collectors;
 public class TaskService {
     private static Logger logger = LoggerFactory.getLogger(TaskService.class);
     private static AverageMedian contrAverageMedian = InitSpringContext.getContext().getBean("AverageMedian", AverageMedian.class);
-    private  static ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper = new ObjectMapper();
+    private static ExecutorService executorService = Executors.newFixedThreadPool(5);
     private static ControllerAverageMedian controllerAverageMedian = new ControllerAverageMedian();
 
     @Produces(MediaType.APPLICATION_JSON)
@@ -40,9 +44,8 @@ public class TaskService {
                                      @QueryParam("second") String second,
                                      @QueryParam("third") String third,
                                      @QueryParam("fourth") String fourth,
-                                     @QueryParam("fifth") String fifth)
-    {
-        LocalDateTime dt1= LocalDateTime.now();
+                                     @QueryParam("fifth") String fifth) {
+        LocalDateTime dt1 = LocalDateTime.now();
         logger.info("SERVER START {}", dt1);
         countAllAmountOfRequests();
         try {
@@ -54,19 +57,15 @@ public class TaskService {
 
             logger.info("STOP");
             return Response.status(200).entity(json).build();
-        }
-        catch(ClientError ex)
-        {
-            return jsonAverMedErrorResp("clientError 400 ",ex.getMessageError(),400);
-        }
-        catch(ServerError ex)
-        {
-            return jsonAverMedErrorResp("serverError 500 ", ex.getMessageError(),500);
+        } catch (ClientError ex) {
+            return jsonAverMedErrorResp("clientError 400 ", ex.getMessageError(), 400);
+        } catch (ServerError ex) {
+            return jsonAverMedErrorResp("serverError 500 ", ex.getMessageError(), 500);
         }
 
     }
-    private Response jsonAverMedErrorResp(String numberError, String messageError, int numbError)
-    {
+
+    private Response jsonAverMedErrorResp(String numberError, String messageError, int numbError) {
         JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add(numberError, messageError);
         String json = jsonBuild.build().toString();
         return Response.status(numbError).entity(json).build();
@@ -96,22 +95,21 @@ public class TaskService {
                 }
             }).collect(Collectors.toList());
 
-        String json = mapper.writeValueAsString(responses);
-        json=json.replace("]", ",");
+            String json = mapper.writeValueAsString(responses);
+            json=json.replace("]", ",");
 
 
-           controllerAverageMedian.statisticsAverage(responses,statistics);
-           controllerAverageMedian.statisticsMedian(responses,statistics);
-           controllerAverageMedian.statisticsRequestsParams(paramRequest,statistics);
+            controllerAverageMedian.statisticsAverage(responses,statistics);
+            controllerAverageMedian.statisticsMedian(responses,statistics);
+            controllerAverageMedian.statisticsRequestsParams(paramRequest,statistics);
 
-           DataBaseRecord.dataBaseRecord(paramRequest,responses,statistics);
 
-           String jsonAvg=controllerAverageMedian.statisticsJsonStringResponse(statistics);
+            String jsonAvg=controllerAverageMedian.statisticsJsonStringResponse(statistics);
             json+=jsonAvg+"]";
 
             return Response.status(200).entity(json).build();
-    }
-         catch (JsonProcessingException e)
+        }
+        catch (JsonProcessingException e)
         {
             return jsonAverMedErrorResp("Error","Something wrong",400);
         }

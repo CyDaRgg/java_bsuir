@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 public class AverageMedianResponse
 {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="average_median_id")
     private int averageMedian_id;
     @Column(name ="average")
