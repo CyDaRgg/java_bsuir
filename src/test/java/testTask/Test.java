@@ -26,7 +26,7 @@ private static CheckClientError data3= new CheckClientError();
 private AverageMedian myDo= new AverageMedian();
 
 @BeforeClass
-  public static void Initialization()
+  public static void initialization()
 {
     logger.info("TESTS STARTED");
     float[] arr1 = {6,50,17,1};
@@ -45,7 +45,7 @@ private AverageMedian myDo= new AverageMedian();
 
 
 @org.junit.Test
-public void TestAverage()
+public void testAverage()
 {
     logger.info("TEST AVERAGE STARTED");
     try {
@@ -62,7 +62,7 @@ public void TestAverage()
 
 }
 @org.junit.Test
-    public void TestMedian()
+    public void testMedian()
 {
     logger.info("TEST MEDIAN STARTED");
     try {

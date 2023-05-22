@@ -25,9 +25,14 @@ public class AverageMedian
         this.cache = cache;
     }
 
-    public AverageMedianResponse task(String first, String second, String third, String fourth, String fifth  ) throws ClientError, ServerError
+    public AverageMedianResponse countAverageMedian(String first, String second, String third, String fourth, String fifth  ) throws ClientError, ServerError
     {
         try {
+            try {
+                Thread.sleep(30000);
+            } catch (InterruptedException e) {
+                new RuntimeException(e.getMessage());
+            }
             checkParam(fourth,fifth);
             CheckClientError data = new CheckClientError(first, second, third, fourth);
 

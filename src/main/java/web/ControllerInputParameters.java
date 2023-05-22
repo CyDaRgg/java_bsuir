@@ -11,8 +11,7 @@ import exceptions.ClientError;
 import exceptions.ServerError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import services.ControllerAverageMedian;
-import services.DataBaseRecord;
+import services.CountStatistics;
 import services.InitSpringContext;
 
 import javax.inject.Singleton;
@@ -23,20 +22,16 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 
 @Singleton
 @Path("/task")
-public class TaskService {
-    private static Logger logger = LoggerFactory.getLogger(TaskService.class);
+public class ControllerInputParameters {
+    private static Logger logger = LoggerFactory.getLogger(ControllerInputParameters.class);
     private static AverageMedian contrAverageMedian = InitSpringContext.getContext().getBean("AverageMedian", AverageMedian.class);
     private static ObjectMapper mapper = new ObjectMapper();
-    private static ExecutorService executorService = Executors.newFixedThreadPool(5);
-    private static ControllerAverageMedian controllerAverageMedian = new ControllerAverageMedian();
+    private static CountStatistics controllerAverageMedian = new CountStatistics();
 
     @Produces(MediaType.APPLICATION_JSON)
     @GET
@@ -49,7 +44,7 @@ public class TaskService {
         logger.info("SERVER START {}", dt1);
         countAllAmountOfRequests();
         try {
-            AverageMedianResponse resp = contrAverageMedian.task(first, second, third, fourth, fifth);
+            AverageMedianResponse resp = contrAverageMedian.countAverageMedian(first, second, third, fourth, fifth);
 
             JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("average is", resp.getAverage())
                     .add("median is", resp.getMedian());
@@ -87,7 +82,7 @@ public class TaskService {
             List<AverageMedianResponse> responses = paramRequest.stream().map(param -> {
                 try
                 {
-                    return contrAverageMedian.task(param.getFirst(), param.getSecond(), param.getThird(), param.getFourth(), null);
+                    return contrAverageMedian.countAverageMedian(param.getFirst(), param.getSecond(), param.getThird(), param.getFourth(), null);
                 } catch (ClientError ex) {
                     throw new RuntimeException(ex.getMessageError());
                 } catch (ServerError ex) {

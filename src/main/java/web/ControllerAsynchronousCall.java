@@ -1,17 +1,17 @@
 package web;
 
 import actions.AverageMedian;
+import actions.countId.Id;
 import actions.countId.IdThread;
-import actions.counter.Counter;
-import actions.counter.CounterThread;
 import dao.AverageMedianResponse;
 import dao.Parameter;
 import exceptions.ClientError;
 import exceptions.ServerError;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Persistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import services.ControllerAverageMedian;
-import services.DataBaseRecord;
+import services.ControllerDataBaseRecord;
 import services.InitSpringContext;
 
 import javax.inject.Singleton;
@@ -29,17 +29,13 @@ import java.util.concurrent.Executors;
 
 @Singleton
 @Path("/asynch")
-public class AsynchronousCall
+public class ControllerAsynchronousCall
 {
-    private static Logger logger = LoggerFactory.getLogger(TaskService.class);
+    private static Logger logger = LoggerFactory.getLogger(ControllerInputParameters.class);
     private static ExecutorService executorService = Executors.newFixedThreadPool(5);
     private static AverageMedian contrAverageMedian = InitSpringContext.getContext().getBean("AverageMedian", AverageMedian.class);
 
 
-    static
-    {
-        DataBaseRecord.executeInitialScript();
-    }
 
     @Produces(MediaType.APPLICATION_JSON)
     @GET
@@ -54,7 +50,7 @@ public class AsynchronousCall
         executorService.submit(() -> {
                 asynchCalculations(first, second, third, fourth, fifth, id);
         });
-        JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("response id is "+ id, "Server is calculating average and median, please wait!");
+        JsonObjectBuilder jsonBuild = Json.createObjectBuilder().add("response id is "+ id, "Server is calculating average and median, please wait 30 seconds!");
         String json = jsonBuild.build().toString();
         return Response.status(200).entity(json).build();
 
@@ -74,19 +70,15 @@ public class AsynchronousCall
 
  void asynchCalculations(String first, String second, String third, String fourth, String fifth, int id  )  {
      try {
-         AverageMedianResponse resp = contrAverageMedian.task(first, second, third, fourth, fifth);
+         AverageMedianResponse resp = contrAverageMedian.countAverageMedian(first, second, third, fourth, fifth);
          Parameter p= new Parameter();
          p.setFirst(first);
          p.setSecond(second);
          p.setThird(third);
          p.setFourth(fourth);
 
-         try {
-             Thread.sleep(30000);
-         } catch (InterruptedException e) {
-             new RuntimeException(e.getMessage());
-         }
-         DataBaseRecord.dataBaseRecord(p,resp,id);
+
+         ControllerDataBaseRecord.dataBaseRecord(p,resp,id);
          logger.info("STOP");
      } catch (ClientError ex) {
          throw new RuntimeException(ex.getMessage());

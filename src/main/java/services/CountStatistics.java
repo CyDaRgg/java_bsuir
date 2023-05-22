@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ControllerAverageMedian
+public class CountStatistics
 {
     public void statisticsAverage(List<AverageMedianResponse> responses, StatisticsValuesResponse statistics  )
     {

@@ -1,6 +1,7 @@
 package web;
 
 
+import actions.countId.Id;
 import actions.counter.Counter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +17,16 @@ import javax.ws.rs.core.Response;
 
 @Singleton
 @Path("/counter")
-public class CounterResponse
+public class ControllerCounter
 {
-    private static Logger logger = LoggerFactory.getLogger(CounterResponse.class);
+    private static Logger logger = LoggerFactory.getLogger(ControllerCounter.class);
 
 
     @Produces(MediaType.APPLICATION_JSON)
     @GET
     public Response counter()
     {
-        int count=Counter.getCounter();
+        int count= Id.getCounter();
         JsonObjectBuilder jsonBuild= Json.createObjectBuilder().add("Amount of all requests is ", count);
         String json= jsonBuild.build().toString();
         logger.info("SERVER COUNT RESPONSE, ALL AMOUNT OF RESPONSES IS {}",count);
